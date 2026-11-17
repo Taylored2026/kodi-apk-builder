@@ -25,3 +25,5 @@
 #
 # Skin shortcuts helper
 # https://mirrors.kodi.tv/addons/omega/script.skinshortcuts/script.skinshortcuts-1.0.23.zip
+TayloredTV custom skin
+https://raw.githubusercontent.com/Taylored2026/kodi-apk-builder/main/kodi-config/TayloredTV-Skin-1.17-Rounded-Blue-Nameplates-TEST%281%29.zip
