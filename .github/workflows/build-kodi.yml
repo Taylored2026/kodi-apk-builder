@@ -509,7 +509,11 @@ jobs:
             cp "$USERDATA_SRC" ~/kodi/userdata/guisettings.xml
             echo "📋 Custom guisettings.xml staged in userdata/ (best-effort)"
           fi
-
+      - name: Set TayloredTV as default skin
+        run: |
+          SETTINGS=~/kodi/system/settings/settings.xml
+          sed -i 's|<default>skin.estuary</default>|<default>skin.tayloredtv</default>|g' "$SETTINGS"
+          echo "TayloredTV skin set as default"
       - name: Cache source tarballs
         uses: actions/cache@v5
         with:
