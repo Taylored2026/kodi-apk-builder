@@ -279,9 +279,25 @@ jobs:
         if: github.event.inputs.package_id != 'org.xbmc.kodi'
         run: |
           PKG="${{ github.event.inputs.package_id }}"
-          echo "📦 Setting package ID: $PKG"
-          find ~/kodi/tools/android/packaging -type f | \
-            xargs sed -i "s|org\.xbmc\.kodi|$PKG|g" 2>/dev/null
+          FILE="$HOME/kodi/version.txt"
+
+          echo "Setting Kodi package ID to $PKG"
+
+          if [ ! -f "$FILE" ]; then
+            echo "ERROR: Kodi version.txt not found"
+            exit 1
+          fi
+
+          if ! grep -q '^APP_PACKAGE ' "$FILE"; then
+            echo "ERROR: APP_PACKAGE setting not found"
+            exit 1
+          fi
+
+          sed -i "s|^APP_PACKAGE .*|APP_PACKAGE $PKG|" "$FILE"
+
+          grep -Fx "APP_PACKAGE $PKG" "$FILE" || exit 1
+
+          echo "Kodi source package ID updated successfully"
 
       - name: Apply custom icon
         run: |
