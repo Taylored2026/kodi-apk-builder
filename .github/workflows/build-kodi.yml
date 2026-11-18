@@ -1056,6 +1056,21 @@ jobs:
             --key-pass pass:android \
             --out "$OUT" \
             "$ALIGNED"
+            
+          echo "🔍 Verifying Android package ID..."
+          EXPECTED="${{ github.event.inputs.package_id }}"
+          ACTUAL=$("$ANDROID_HOME/build-tools/34.0.0/aapt" dump badging "$OUT" | sed -n "s/^package: name='\([^']*\)'.*/\1/p" | head -1)
+
+          echo "Expected: $EXPECTED"
+          echo "Actual:   $ACTUAL"
+
+          if [ -z "$ACTUAL" ] || [ "$ACTUAL" != "$EXPECTED" ]; then
+            echo "❌ Package ID mismatch — stopping build!"
+            exit 1
+          fi
+
+          echo "✅ Package ID verified"
+
 
           SIZE=$(du -sh "$OUT" | cut -f1)
           echo "✅ Signed APK: $OUT_NAME ($SIZE)"
